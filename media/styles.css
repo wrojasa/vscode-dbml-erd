@@ -1,0 +1,305 @@
+/* Estilos del webview. Mismo diseño que el plugin de Obsidian, con las
+   variables de tema de VS Code (claro, oscuro y alto contraste). */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  background: var(--vscode-editor-background);
+  color: var(--vscode-editor-foreground);
+  font-family: var(--vscode-font-family, sans-serif);
+  font-size: var(--vscode-font-size, 13px);
+}
+#app,
+.dbml-erd-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.dbml-erd-message {
+  padding: 16px;
+  color: var(--vscode-descriptionForeground);
+  white-space: pre-wrap;
+}
+
+/* aviso sobre el diagrama (error de parseo mientras se edita, "Rendering…") */
+.dbml-erd-banner {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 6;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  background: var(--vscode-editorWidget-background);
+  color: var(--vscode-editorWidget-foreground, var(--vscode-editor-foreground));
+  border: 1px solid var(--vscode-editorWidget-border);
+  box-shadow: 0 2px 8px var(--vscode-widget-shadow);
+  pointer-events: none;
+}
+.dbml-erd-banner.error {
+  background: var(--vscode-inputValidation-errorBackground);
+  border-color: var(--vscode-inputValidation-errorBorder);
+}
+.dbml-erd-banner.hidden {
+  display: none;
+}
+
+.dbml-erd-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  overflow: hidden;
+  background-color: var(--vscode-editor-background);
+  background-image: radial-gradient(var(--vscode-editorWidget-border) 1px, transparent 1px);
+  background-size: 22px 22px;
+  cursor: grab;
+}
+.dbml-erd-canvas.panning {
+  cursor: grabbing;
+}
+
+.dbml-erd-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  font-family: var(--vscode-font-family, sans-serif);
+}
+
+/* tablas */
+.dbml-node {
+  cursor: move;
+}
+.dbml-body {
+  fill: var(--vscode-editorWidget-background);
+  stroke: var(--vscode-editorWidget-border);
+  stroke-width: 1;
+}
+.dbml-row {
+  fill: transparent;
+}
+.dbml-row.alt {
+  fill: var(--vscode-list-hoverBackground);
+}
+.dbml-head {
+  fill: var(--dbml-head-fill, var(--vscode-button-background));
+  cursor: pointer;
+}
+.dbml-head-txt {
+  fill: var(--dbml-head-txt-fill, var(--vscode-button-foreground));
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.dbml-node-toggle {
+  fill: var(--dbml-head-txt-fill, var(--vscode-button-foreground));
+  font-size: 11px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+.dbml-node-toggle-hit {
+  fill: transparent;
+  cursor: pointer;
+}
+.dbml-col {
+  fill: var(--vscode-editor-foreground);
+  font-size: 12.5px;
+}
+.dbml-col.pk {
+  font-weight: 700;
+}
+.dbml-type {
+  fill: var(--vscode-descriptionForeground);
+  font-size: 11.5px;
+  text-anchor: end;
+}
+.dbml-icon {
+  font-size: 11px;
+}
+.dbml-badge {
+  fill: var(--vscode-editorWidget-border);
+}
+.dbml-badge-txt {
+  fill: var(--vscode-descriptionForeground);
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* áreas de trabajo (TableGroup): el color llega por --dbml-area-color */
+.dbml-area-bg {
+  fill: var(--dbml-area-color);
+  fill-opacity: 0.07;
+  stroke: var(--dbml-area-color);
+  stroke-opacity: 0.55;
+  stroke-width: 1;
+}
+.dbml-area-head {
+  fill: var(--dbml-area-color);
+  cursor: grab;
+}
+.dbml-area-collapsed {
+  cursor: grab;
+}
+.dbml-area-body {
+  fill: var(--vscode-editorWidget-background);
+  stroke: var(--dbml-area-color);
+  stroke-width: 1;
+}
+.dbml-area-txt {
+  fill: var(--dbml-area-txt, var(--vscode-button-foreground));
+  font-weight: 700;
+  font-size: 12.5px;
+  pointer-events: none;
+}
+.dbml-area-toggle {
+  fill: var(--dbml-area-txt, var(--vscode-button-foreground));
+  font-size: 11px;
+  pointer-events: none;
+}
+.dbml-area-toggle-hit {
+  fill: transparent;
+  cursor: pointer;
+}
+.dbml-area-count {
+  fill: var(--vscode-descriptionForeground);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+/* aristas */
+.dbml-edge {
+  fill: none;
+  stroke: var(--vscode-descriptionForeground);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+.dbml-edge.selected {
+  stroke: var(--vscode-focusBorder);
+  stroke-width: 2;
+}
+.dbml-edge.custom {
+  stroke-dasharray: none;
+}
+/* path invisible y ancho para tocar/arrastrar la arista (sobre todo en táctil) */
+.dbml-edge-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+/* tiradores para doblar la arista */
+.dbml-edge-handle {
+  fill: var(--vscode-focusBorder);
+  stroke: var(--vscode-editor-background);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  cursor: grab;
+  pointer-events: all;
+}
+.dbml-edge-handle.add {
+  fill: var(--vscode-editor-background);
+  stroke: var(--vscode-focusBorder);
+  opacity: 0.65;
+}
+.dbml-marker {
+  stroke: var(--vscode-descriptionForeground);
+  stroke-width: 1.5;
+  fill: none;
+  pointer-events: none;
+}
+.dbml-marker-circle {
+  fill: var(--vscode-editor-background);
+}
+
+/* toolbar */
+.dbml-erd-toolbar {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+}
+.dbml-erd-toolbar button {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid var(--vscode-editorWidget-border);
+  background: var(--vscode-button-secondaryBackground, var(--vscode-editorWidget-background));
+  color: var(--vscode-button-secondaryForeground, var(--vscode-editor-foreground));
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  font-family: inherit;
+}
+.dbml-erd-toolbar button:hover {
+  border-color: var(--vscode-focusBorder);
+  background: var(--vscode-button-secondaryHoverBackground, var(--vscode-list-hoverBackground));
+}
+.dbml-erd-toolbar button:focus-visible {
+  outline: 1px solid var(--vscode-focusBorder);
+  outline-offset: 1px;
+}
+.dbml-erd-toolbar button svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* menú contextual propio */
+.dbml-menu {
+  position: fixed;
+  z-index: 100;
+  min-width: 180px;
+  padding: 4px 0;
+  border-radius: 5px;
+  background: var(--vscode-menu-background, var(--vscode-editorWidget-background));
+  color: var(--vscode-menu-foreground, var(--vscode-editor-foreground));
+  border: 1px solid var(--vscode-menu-border, var(--vscode-editorWidget-border));
+  box-shadow: 0 2px 8px var(--vscode-widget-shadow);
+  font-size: 13px;
+  user-select: none;
+}
+.dbml-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px 5px 8px;
+  cursor: pointer;
+  outline: none;
+  white-space: nowrap;
+}
+.dbml-menu-item:hover,
+.dbml-menu-item:focus {
+  background: var(--vscode-menu-selectionBackground, var(--vscode-list-activeSelectionBackground));
+  color: var(--vscode-menu-selectionForeground, var(--vscode-list-activeSelectionForeground));
+}
+.dbml-menu-item.danger {
+  color: var(--vscode-errorForeground);
+}
+.dbml-menu-item.danger:hover,
+.dbml-menu-item.danger:focus {
+  color: var(--vscode-menu-selectionForeground, var(--vscode-list-activeSelectionForeground));
+}
+.dbml-menu-check {
+  width: 14px;
+  text-align: center;
+  font-size: 11px;
+}
+.dbml-menu-sep {
+  height: 1px;
+  margin: 4px 8px;
+  background: var(--vscode-menu-separatorBackground, var(--vscode-editorWidget-border));
+}

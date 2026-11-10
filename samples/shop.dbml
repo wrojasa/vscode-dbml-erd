@@ -1,0 +1,61 @@
+// Sample schema. Open with "Open With… > DBML ER Diagram" or run
+// "DBML ERD: Open ER Diagram to the Side".
+
+Table customer {
+  id integer [pk, not null]
+  name varchar(120) [not null]
+  email varchar(200) [not null, unique]
+  city_id integer [ref: > city.id]
+}
+
+Table city {
+  id integer [pk, not null]
+  name varchar(80) [not null]
+}
+
+Table "order" [headercolor: #2e7d32] {
+  id integer [pk, not null]
+  customer_id integer [not null, ref: > customer.id]
+  placed_at datetime [not null]
+  status varchar(20) [not null]
+}
+
+Table order_item {
+  id integer [pk, not null]
+  order_id integer [not null, ref: > "order".id]
+  product_id integer [not null, ref: > product.id]
+  qty integer [not null]
+  unit_price decimal(12,2) [not null]
+}
+
+Table product {
+  id integer [pk, not null]
+  sku varchar(40) [not null, unique]
+  name varchar(160) [not null]
+  category_id integer [ref: > category.id]
+}
+
+Table category {
+  id integer [pk, not null]
+  name varchar(80) [not null]
+}
+
+TableGroup sales [color: #20479e] {
+  customer
+  "order"
+  order_item
+}
+
+TableGroup catalog [color: #ef6c00] {
+  product
+  category
+}
+
+// @pos customer 54 -232
+// @pos city 647 -276
+// @pos order -284 -260
+// @pos order_item 54 -34
+// @pos product 502 287
+// @pos category 840 371
+// @edge customer city_id city id 352 -92 352 -220
+// @view 159 160 0.395

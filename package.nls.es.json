@@ -1,0 +1,6 @@
+{
+  "editor.displayName": "Diagrama ER de DBML",
+  "cmd.openPreview": "Abrir diagrama ER al lado",
+  "config.language": "Idioma de la interfaz para los menús, diálogos y avisos del diagrama.",
+  "config.language.auto": "Sigue el idioma de VS Code (español si empieza por \"es\", inglés en otro caso)."
+}

@@ -1,0 +1,43 @@
+name: Release
+
+# Publishes on a version tag (v0.1.0). The tag must match "version" in
+# package.json. Secrets: VSCE_PAT (Marketplace), OVSX_PAT (Open VSX, optional).
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Check tag matches package.json version
+        run: |
+          PKG=$(node -p "require('./package.json').version")
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$PKG" != "$TAG" ]; then echo "tag $TAG != package.json $PKG"; exit 1; fi
+      - run: npm run typecheck
+      - run: npm test
+      - run: npx vsce package --out vscode-dbml-erd-${GITHUB_REF_NAME#v}.vsix
+      - name: Publish to Visual Studio Marketplace
+        run: npx vsce publish --packagePath vscode-dbml-erd-*.vsix
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      - name: Publish to Open VSX
+        if: ${{ env.OVSX_PAT != '' }}
+        run: npx ovsx publish vscode-dbml-erd-*.vsix -p "$OVSX_PAT"
+      - name: GitHub release with the .vsix
+        uses: softprops/action-gh-release@v2
+        with:
+          files: vscode-dbml-erd-*.vsix
+          generate_release_notes: true
