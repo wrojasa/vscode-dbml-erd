@@ -1,3 +1,5 @@
+[![XERJ Corpus Hub contributor](https://hub.xerj.org/contributors/wrojasa/badge.svg)](https://hub.xerj.org/contributors/wrojasa)
+
 # DBML ER Diagrams for Visual Studio Code
 
 [![Marketplace](https://img.shields.io/visual-studio-marketplace/v/wrojasa.vscode-dbml-erd?label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=wrojasa.vscode-dbml-erd)
